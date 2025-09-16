@@ -1,0 +1,8 @@
+C:\Users\Marki\OneDrive\Documentos\Trabalho\myProjects\CustomerOrders\CustomerOrders.API\obj\Debug\net9.0\CustomerOrders.API.csproj.AssemblyReference.cache
+C:\Users\Marki\OneDrive\Documentos\Trabalho\myProjects\CustomerOrders\CustomerOrders.API\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\Marki\OneDrive\Documentos\Trabalho\myProjects\CustomerOrders\CustomerOrders.API\obj\Debug\net9.0\CustomerOrders.API.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Marki\OneDrive\Documentos\Trabalho\myProjects\CustomerOrders\CustomerOrders.API\obj\Debug\net9.0\CustomerOrders.API.AssemblyInfoInputs.cache
+C:\Users\Marki\OneDrive\Documentos\Trabalho\myProjects\CustomerOrders\CustomerOrders.API\obj\Debug\net9.0\CustomerOrders.API.AssemblyInfo.cs
+C:\Users\Marki\OneDrive\Documentos\Trabalho\myProjects\CustomerOrders\CustomerOrders.API\obj\Debug\net9.0\CustomerOrders.API.csproj.CoreCompileInputs.cache
+C:\Users\Marki\OneDrive\Documentos\Trabalho\myProjects\CustomerOrders\CustomerOrders.API\obj\Debug\net9.0\CustomerOrders.API.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Marki\OneDrive\Documentos\Trabalho\myProjects\CustomerOrders\CustomerOrders.API\obj\Debug\net9.0\CustomerOrders.API.MvcApplicationPartsAssemblyInfo.cache
