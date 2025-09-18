@@ -7,7 +7,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using System;
-using Microsoft.Extensions.Options;
+
+using System.Text.Json.Serialization;
+using CustomerOrders.API.Converters;
 
 namespace CustomerOrders.API
 {
@@ -27,7 +29,13 @@ namespace CustomerOrders.API
             builder.Services.AddScoped<ProductService>();
             builder.Services.AddScoped<CartService>();
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new DateTimeJsonConverter("dd/MM/yyyy HH:mm:ss"));
+                    options.JsonSerializerOptions.Converters.Add(new NullableDateTimeJsonConverter("dd/MM/yyyy HH:mm:ss"));
+                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
             builder.Services.AddEndpointsApiExplorer();

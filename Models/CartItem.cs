@@ -3,8 +3,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerOrders.API.Models;
+
 [Table("CART_ITEM")]
-public class CartItem
+public class CartItem : IAuditable
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -21,7 +22,14 @@ public class CartItem
     public int ProductId { get; set; }
 
     public Products Product { get; set; }
-    
+
     [Column("QUANTITY")]
     public int Quantity { get; set; }
+
+    [Required]
+    [Column("DATA_REGISTER")]
+    public DateTime DataRegister { get; set; }
+
+    [Column("DATA_UPDATE")]
+    public DateTime? DataUpdate { get; set; }
 }

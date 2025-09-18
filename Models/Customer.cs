@@ -1,10 +1,11 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerOrders.API.Models
 {
     [Table("CUSTOMER")]
-    public class Customer
+    public class Customer : IAuditable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -20,6 +21,12 @@ namespace CustomerOrders.API.Models
         [MaxLength(11, ErrorMessage = "O cpf deve conter menos que 11 characters")]
         [Column("CPF")]
         public string Cpf { get; set; } = string.Empty;
-        
+
+        [Required]
+        [Column("DATA_REGISTER")]
+        public DateTime DataRegister { get; set; }
+
+        [Column("DATA_UPDATE")]
+        public DateTime? DataUpdate { get; set; }       
     }
 }

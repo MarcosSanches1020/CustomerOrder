@@ -104,3 +104,4 @@ C:\Users\Marki\OneDrive\Documentos\Trabalho\myProjects\CustomerOrders\CustomerOr
 C:\Users\Marki\OneDrive\Documentos\Trabalho\myProjects\CustomerOrders\CustomerOrders.API\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\Marki\OneDrive\Documentos\Trabalho\myProjects\CustomerOrders\CustomerOrders.API\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\Marki\OneDrive\Documentos\Trabalho\myProjects\CustomerOrders\CustomerOrders.API\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Marki\OneDrive\Documentos\Trabalho\myProjects\CustomerOrders\CustomerOrders.API\obj\Debug\net8.0\CustomerOrders.API.sourcelink.json
