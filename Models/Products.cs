@@ -1,9 +1,11 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerOrders.API.Models;
+
 [Table("PRODUCTS")]
-public class Products
+public class Products : IAuditable
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -27,4 +29,11 @@ public class Products
     [MaxLength(150, ErrorMessage = "O o tipo do produto deve conter menos que 150 characters")]
     [Column("DESCRIPTION")]
     public string Description { get; set; } = string.Empty;
+
+    [Required]
+    [Column("DATA_REGISTER")]
+    public DateTime DataRegister { get; set; }
+
+    [Column("DATA_UPDATE")]
+    public DateTime? DataUpdate { get; set; }
 }
