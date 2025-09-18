@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using CustomerOrders.API.Models;
 using CustomerOrders.API.Services;
 using Microsoft.AspNetCore.Mvc;
+using CustomerOrders.API.DTOs.Customer;
+using CustomerOrders.API.Mappings;
 
 namespace CustomerOrders.API.Controllers
 {
@@ -19,7 +21,7 @@ namespace CustomerOrders.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCustomer([FromBody] Customer newCustomer)
+        public async Task<IActionResult> AddCustomer([FromBody] CustomerCreateDto newCustomer)
         {
             try
             {
@@ -33,9 +35,10 @@ namespace CustomerOrders.API.Controllers
                     throw new Exception("There is already a customer registered with this CPF");
                 }
 
-                await _customerService.AddCustomer(newCustomer);
-                
-                return Created("Custumer successfully created", newCustomer);
+                var entity = newCustomer.ToEntity();
+                var saved = await _customerService.AddCustomer(entity);
+
+                return Created("Custumer successfully created", saved.ToResponseDto());
             }
             catch (Exception ex )
             {
@@ -46,15 +49,15 @@ namespace CustomerOrders.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomersAll()
+        public async Task<ActionResult<IEnumerable<CustomerResponseDto>>> GetCustomersAll()
         {
             var customers = await _customerService.GetCustumers();
-
-            return Ok(customers);
+            var result = customers.ConvertAll(c => c.ToResponseDto());
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Customer>> GetCustomer(int id)
+        public async Task<ActionResult<CustomerResponseDto>> GetCustomer(int id)
         {
             try
             {
@@ -65,7 +68,7 @@ namespace CustomerOrders.API.Controllers
                     return NotFound("Customer not found in database");
                 }
 
-                return Ok(customer);
+                return Ok(customer.ToResponseDto());
             }
             catch (Exception ex)
             {
@@ -74,7 +77,7 @@ namespace CustomerOrders.API.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateCustomer(int id, [FromBody] Customer customerUpdate)
+        public async Task<IActionResult> UpdateCustomer(int id, [FromBody] CustomerUpdateDto customerUpdate)
         {
             try
             {
@@ -83,14 +86,23 @@ namespace CustomerOrders.API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var updatedCustomer = await _customerService.UpdateCustomer(id, customerUpdate);
+                var existing = await _customerService.GetCustomerById(id);
+
+                if (existing == null)
+                {
+                    return NotFound("Customer not found in database");
+                }
+
+                customerUpdate.ApplyToEntity(existing);
+
+                var updatedCustomer = await _customerService.UpdateCustomer(id, existing);
 
                 if (updatedCustomer == null)
                 {
                     return NotFound("Customer not found in database");
                 }
 
-                return Ok(updatedCustomer);
+                return Ok(updatedCustomer.ToResponseDto());
             }
             catch (Exception ex)
             {
