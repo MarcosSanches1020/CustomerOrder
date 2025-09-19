@@ -27,7 +27,7 @@ namespace CustomerOrders.API.Controllers
             {
                 var itemsCart = new CartItem { ProductId = body.productId, Quantity = body.quantity };
                 var cart = await _cartService.AddItemAsync(customerId, itemsCart);
-                return Ok(new { message = "Item adicionado ao carrinho!", cartId = cart.Id });
+                return Ok(new { message = "Item added to cart!", cartId = cart.Id });
             }
             catch (System.Exception ex)
             {
@@ -41,7 +41,7 @@ namespace CustomerOrders.API.Controllers
             var cart = await _cartService.GetCartAsync(customerId);
 
             if (cart == null)
-                return NotFound("Carrinho não encontrado.");
+                return NotFound("Cart not found.");
 
             var response = new
             {
@@ -66,7 +66,7 @@ namespace CustomerOrders.API.Controllers
             try
             {
                 var cart = await _cartService.UpdateItemQuantityAsync(customerId, productId, body.quantity);
-                return Ok(new { message = "Quantidade atualizada", cartId = cart.Id });
+                return Ok(new { message = "Updated quantity", cartId = cart.Id });
             }
             catch (System.Exception ex)
             {
@@ -80,7 +80,7 @@ namespace CustomerOrders.API.Controllers
             try
             {
                 var cart = await _cartService.RemoveItemAsync(customerId, productId);
-                return Ok(new { message = "Item removido", cartId = cart.Id });
+                return Ok(new { message = "Item removed", cartId = cart.Id });
             }
             catch (System.Exception ex)
             {
@@ -92,7 +92,7 @@ namespace CustomerOrders.API.Controllers
         public async Task<IActionResult> ClearCart(int customerId)
         {
             await _cartService.ClearCartAsync(customerId);
-            return Ok(new { message = "Carrinho limpo" });
+            return Ok(new { message = "Clean cart" });
         }
     }
 }
