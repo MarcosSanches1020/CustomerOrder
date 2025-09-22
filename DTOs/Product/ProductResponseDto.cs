@@ -9,7 +9,7 @@ public class ProductResponseDto
     public decimal PriceProduct { get; set; }
     public string TypeProduct { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public DateTime DataRegister { get; set; }
-    public DateTime? DataUpdate { get; set; }
+    public string DataRegister { get; set; } = string.Empty;
+    public string DataUpdate { get; set; }
 
 }

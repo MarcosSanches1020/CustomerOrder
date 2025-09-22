@@ -27,8 +27,8 @@ namespace CustomerOrders.API.Mappings
                 Id = entity.Id,
                 Name = entity.Name,
                 Cpf = entity.Cpf,
-                DataRegister = entity.DataRegister,
-                DataUpdate = entity.DataUpdate
+                DataRegister = entity.DataRegister.ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                DataUpdate = entity.DataUpdate.HasValue ? entity.DataUpdate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : null
             };
         }
     }
