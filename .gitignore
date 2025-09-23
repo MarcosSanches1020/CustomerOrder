@@ -1,0 +1,24 @@
+# Pastas de build
+bin/
+obj/
+out/
+
+# Configurações locais do VS / VS Code
+.vs/
+*.user
+*.suo
+*.vscode/
+
+# Arquivos temporários
+*.tmp
+*.log
+
+# Dependências (caso use npm/yarn em projetos fullstack)
+node_modules/
+
+# Arquivos de publish
+*.publish.xml
+
+# Cache do Rider/Resharper
+.idea/
+*.DotSettings.user
