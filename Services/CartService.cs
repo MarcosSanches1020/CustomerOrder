@@ -132,37 +132,35 @@ namespace CustomerOrders.API.Services
         public async Task<Cart> AddItemAsync(int customerId, CartItem itemsCart)
         {
             var cart = await _appDbContext.carts
+                .Include(c => c.Customer)
                 .Include(c => c.Items)
+                    .ThenInclude(i => i.Product)
                 .FirstOrDefaultAsync(c => c.CustomerId == customerId);
 
             if (cart == null)
             {
                 cart = new Cart { CustomerId = customerId };
                 _appDbContext.carts.Add(cart);
+                await _appDbContext.SaveChangesAsync();
+
+                cart = await _appDbContext.carts
+                    .Include(c => c.Customer)
+                    .Include(c => c.Items)
+                        .ThenInclude(i => i.Product)
+                    .FirstOrDefaultAsync(c => c.CustomerId == customerId);
             }
 
             var product = await _appDbContext.products.FindAsync(itemsCart.ProductId);
             if (product == null)
-            {
                 throw new System.Exception("Produto não encontrado");
-            }
 
             var existingItem = cart.Items.FirstOrDefault(i => i.ProductId == itemsCart.ProductId);
             if (existingItem != null)
-            {
                 existingItem.Quantity += itemsCart.Quantity;
-            }
             else
-            {
-                cart.Items.Add(new CartItem
-                {
-                    ProductId = itemsCart.ProductId,
-                    Quantity = itemsCart.Quantity
-                });
-            }
+                cart.Items.Add(new CartItem { ProductId = itemsCart.ProductId, Quantity = itemsCart.Quantity });
 
             await _appDbContext.SaveChangesAsync();
-
             return cart;
         }
 
