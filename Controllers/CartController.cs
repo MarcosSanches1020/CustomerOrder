@@ -20,79 +20,40 @@ namespace CustomerOrders.API.Controllers
         public record AddCartItemDto(int productId, int quantity);
         public record UpdateCartItemQuantityDto(int quantity);
 
+
         [HttpPost("{customerId}/items")]
-        public async Task<IActionResult> AddItem(int customerId, [FromBody] AddCartItemDto body)
+        public async Task<IActionResult> AddItemInit(int customerId, [FromBody] AddCartItemDto body)
         {
-            try
-            {
-                var itemsCart = new CartItem { ProductId = body.productId, Quantity = body.quantity };
-                var cart = await _cartService.AddItemAsync(customerId, itemsCart);
-                return Ok(new { message = "Item added to cart!", cartId = cart.Id });
-            }
-            catch (System.Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
+            var result = await _cartService.AddItem(customerId, body.productId, body.quantity);
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpGet("{customerId}")]
-        public async Task<IActionResult> GetCart(int customerId)
+        public async Task<IActionResult> GetCartInit(int customerId)
         {
-            var cart = await _cartService.GetCartAsync(customerId);
-
-            if (cart == null)
-                return NotFound("Cart not found.");
-
-            var response = new
-            {
-                customer = cart.Customer,
-                items = cart.Items.Select(items => new
-                {
-                    productId = items.ProductId,
-                    name = items.Product.NameProduct,
-                    price = items.Product.PriceProduct,
-                    quantity = items.Quantity,
-                    total = items.Quantity * items.Product.PriceProduct
-                }),
-                totalCart = cart.Items.Sum(items => items.Quantity * items.Product.PriceProduct)
-            };
-
-            return Ok(response);
+            var result = await _cartService.GetCart(customerId);
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpPut("{customerId}/items/{productId}")]
         public async Task<IActionResult> UpdateItemQuantity(int customerId, int productId, [FromBody] UpdateCartItemQuantityDto body)
         {
-            try
-            {
-                var cart = await _cartService.UpdateItemQuantityAsync(customerId, productId, body.quantity);
-                return Ok(new { message = "Updated quantity", cartId = cart.Id });
-            }
-            catch (System.Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
+            var result = await _cartService.UpdateItemQuantity(customerId, productId, body.quantity);
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpDelete("{customerId}/items/{productId}")]
-        public async Task<IActionResult> RemoveItem(int customerId, int productId)
+        public async Task<IActionResult> RemoveItemInit(int customerId, int productId)
         {
-            try
-            {
-                var cart = await _cartService.RemoveItemAsync(customerId, productId);
-                return Ok(new { message = "Item removed", cartId = cart.Id });
-            }
-            catch (System.Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
+            var result = await _cartService.RemoveItem(customerId, productId);
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpDelete("{customerId}")]
-        public async Task<IActionResult> ClearCart(int customerId)
+        public async Task<IActionResult> ClearCartInit(int customerId)
         {
-            await _cartService.ClearCartAsync(customerId);
-            return Ok(new { message = "Clean cart" });
+            var result = await _cartService.ClearCart(customerId);
+            return StatusCode(result.StatusCode, result);
         }
     }
 }

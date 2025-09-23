@@ -20,13 +20,7 @@ namespace CustomerOrders.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProduct([FromBody] ProductCreateDto newProduct)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var result = await _productService.AddProductAsync(newProduct);
-            if (!result.Success)
-                return StatusCode(result.StatusCode, result.Message);
-
             return Created("Product successfully created", result.Data);
         }
 
@@ -41,20 +35,13 @@ namespace CustomerOrders.API.Controllers
         public async Task<ActionResult<ProductResponseDto>> GetProduct(int id)
         {
             var result = await _productService.GetProductById(id);
-            if (!result.Success)
-                return StatusCode(result.StatusCode, result.Message);
             return Ok(result.Data);
         }
 
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductUpdateDto productUpdate)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var result = await _productService.UpdateProductAsync(id, productUpdate);
-            if (!result.Success)
-                return StatusCode(result.StatusCode, result.Message);
             return Ok(result.Data);
         }
 
@@ -62,8 +49,6 @@ namespace CustomerOrders.API.Controllers
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var result = await _productService.DeleteProductById(id);
-            if (!result.Success)
-                return StatusCode(result.StatusCode, result.Message);
             return Ok(result.Message);
         }
     }
