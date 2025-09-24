@@ -1,6 +1,6 @@
 
 using System;
-using System.Net.Http;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CustomerOrders.API.Data;
 using CustomerOrders.API.DTOs.Sellers;
@@ -30,9 +30,12 @@ namespace CustomerOrders.API.Services
         public async Task<ServiceResultSellers<SellersResponseDto>> createNewSellerAsync(SellersCreateDto newSeller)
         {
             var result = new ServiceResultSellers<SellersResponseDto>();
+
+            var entityExisting = await _appDbContext.sellers
+                   .AnyAsync(sellers => sellers.Cpf == newSeller.Cpf);
             try
             {
-                if (await SellerVerifyExisting(newSeller.Cpf))
+                if (entityExisting.Equals(true))
                 {
                     return new ServiceResultSellers<SellersResponseDto>
                     {
@@ -41,13 +44,16 @@ namespace CustomerOrders.API.Services
                         Message = "Já existe um cliente cadastrado com este CPF"
                     };
                 }
+
                 var entity = newSeller.ToEntity();
-                var saved = await SaveSellerAsync(entity);
+                var saved = _appDbContext.sellers.Add(entity);
+                await _appDbContext.SaveChangesAsync();
+
                 return new ServiceResultSellers<SellersResponseDto>
                 {
                     Success = true,
                     StatusCode = 201,
-                    Datas = saved.ToResponseDto(),
+                    Datas = saved.Entity.ToResponseDto(),
                     Message = "Seller created successfully"
                 };
             }
@@ -61,32 +67,42 @@ namespace CustomerOrders.API.Services
                 };
             }
         }
-        
-        public async Task<bool> SellerVerifyExisting(string cpf)
+
+        public async Task<List<SellersResponseDto>> GetCustomersAll()
         {
-            try
-            {
-                return await _appDbContext.sellers
-                    .AnyAsync(sellers => sellers.Cpf == cpf);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            var sellers = await _appDbContext.sellers.ToListAsync();
+            return sellers.ConvertAll(s => s.ToResponseDto());
         }
 
-        public async Task<Sellers> SaveSellerAsync(Sellers newSeller)
+        public async Task<ServiceResultSellers<SellersResponseDto>> GetSellerId(int id)
         {
             try
             {
-                _appDbContext.sellers.Add(newSeller);
-                await _appDbContext.SaveChangesAsync();
-
-                return newSeller;
+                var sellers = await _appDbContext.sellers.FindAsync(id);
+                if (sellers == null)
+                {
+                    return new ServiceResultSellers<SellersResponseDto>
+                    {
+                        Success = false,
+                        StatusCode = 404,
+                        Message = "Seller not found"
+                    };
+                }
+                return new ServiceResultSellers<SellersResponseDto>
+                {
+                    Success = true,
+                    StatusCode = 200,
+                    Datas = sellers.ToResponseDto()
+                };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return new ServiceResultSellers<SellersResponseDto>
+                {
+                    Success = false,
+                    StatusCode = 500,
+                    Message = ex.Message
+                };
             }
         }
     }

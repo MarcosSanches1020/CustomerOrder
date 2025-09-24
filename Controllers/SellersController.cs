@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using CustomerOrders.API.DTOs.Sellers;
 using CustomerOrders.API.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerOrders.API.Controllers
@@ -22,6 +21,20 @@ namespace CustomerOrders.API.Controllers
         {
             var result = await _sellersService.createNewSellerAsync(newSeller);
             return Created("Seller successfully created", result.Datas);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllSellers()
+        {
+            var result = await _sellersService.GetCustomersAll();
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<SellersResponseDto>> GetSeller(int id)
+        {
+            var result = await _sellersService.GetSellerId(id);
+            return Ok(result.Datas);   
         }
 
     }
