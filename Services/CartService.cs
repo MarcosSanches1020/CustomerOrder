@@ -27,27 +27,15 @@ namespace CustomerOrders.API.Services
 
         public async Task<ServiceCartResult<CartResponseDto>> AddItem(int customerId, int productId, int quantity)
         {
-            try
+            var itemsCart = new CartItem { ProductId = productId, Quantity = quantity };
+            var cart = await AddItemAsync(customerId, itemsCart);
+            return new ServiceCartResult<CartResponseDto>
             {
-                var itemsCart = new CartItem { ProductId = productId, Quantity = quantity };
-                var cart = await AddItemAsync(customerId, itemsCart);
-                return new ServiceCartResult<CartResponseDto>
-                {
-                    Success = true,
-                    StatusCode = 200,
-                    Data = cart.ToResponseDto(),
-                    Message = "Item adicionado ao carrinho!"
-                };
-            }
-            catch (System.Exception ex)
-            {
-                return new ServiceCartResult<CartResponseDto>
-                {
-                    Success = false,
-                    StatusCode = 404,
-                    Message = ex.Message
-                };
-            }
+                Success = true,
+                StatusCode = 200,
+                Data = cart.ToResponseDto(),
+                Message = "Item adicionado ao carrinho!"
+            };
         }
 
         public async Task<ServiceCartResult<CartResponseDto>> GetCart(int customerId)
@@ -72,50 +60,26 @@ namespace CustomerOrders.API.Services
 
         public async Task<ServiceCartResult<CartResponseDto>> UpdateItemQuantity(int customerId, int productId, int quantity)
         {
-            try
+            var cart = await UpdateItemQuantityAsync(customerId, productId, quantity);
+            return new ServiceCartResult<CartResponseDto>
             {
-                var cart = await UpdateItemQuantityAsync(customerId, productId, quantity);
-                return new ServiceCartResult<CartResponseDto>
-                {
-                    Success = true,
-                    StatusCode = 200,
-                    Data = cart.ToResponseDto(),
-                    Message = "Quantidade atualizada"
-                };
-            }
-            catch (System.Exception ex)
-            {
-                return new ServiceCartResult<CartResponseDto>
-                {
-                    Success = false,
-                    StatusCode = 404,
-                    Message = ex.Message
-                };
-            }
+                Success = true,
+                StatusCode = 200,
+                Data = cart.ToResponseDto(),
+                Message = "Quantidade atualizada"
+            };
         }
 
         public async Task<ServiceCartResult<CartResponseDto>> RemoveItem(int customerId, int productId)
         {
-            try
+            var cart = await RemoveItemAsync(customerId, productId);
+            return new ServiceCartResult<CartResponseDto>
             {
-                var cart = await RemoveItemAsync(customerId, productId);
-                return new ServiceCartResult<CartResponseDto>
-                {
-                    Success = true,
-                    StatusCode = 200,
-                    Data = cart.ToResponseDto(),
-                    Message = "Item removido"
-                };
-            }
-            catch (System.Exception ex)
-            {
-                return new ServiceCartResult<CartResponseDto>
-                {
-                    Success = false,
-                    StatusCode = 404,
-                    Message = ex.Message
-                };
-            }
+                Success = true,
+                StatusCode = 200,
+                Data = cart.ToResponseDto(),
+                Message = "Item removido"
+            };
         }
 
         public async Task<ServiceCartResult<object>> ClearCart(int customerId)

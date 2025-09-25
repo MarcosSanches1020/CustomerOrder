@@ -28,6 +28,7 @@ namespace CustomerOrders.API
             builder.Services.AddScoped<CustomerService>();
             builder.Services.AddScoped<ProductService>();
             builder.Services.AddScoped<CartService>();
+            builder.Services.AddScoped<SellersService>();
 
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>

@@ -15,6 +15,7 @@ namespace CustomerOrders.API.Data
         public DbSet<Products> products { get; set; }
         public DbSet<Cart> carts { get; set; }
         public DbSet<CartItem> cartItems { get; set; }
+        public DbSet<Sellers> sellers { get; set; }
 
         public override int SaveChanges()
         {
