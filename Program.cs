@@ -7,6 +7,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using System;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 using System.Text.Json.Serialization;
 using CustomerOrders.API.Converters;
@@ -29,6 +32,25 @@ namespace CustomerOrders.API
             builder.Services.AddScoped<ProductService>();
             builder.Services.AddScoped<CartService>();
             builder.Services.AddScoped<SellersService>();
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"] ?? "your_secret_key_here"))
+                };
+            });
+
+            builder.Services.AddAuthorization();
 
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
@@ -66,12 +88,11 @@ namespace CustomerOrders.API
                 options.AddPolicy("AllowAll",
                     policy => policy
                         .AllowAnyOrigin()
-                        .AllowAnyMethod() 
-                        .AllowAnyHeader()); 
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
             });
 
             var app = builder.Build();
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -86,6 +107,7 @@ namespace CustomerOrders.API
 
             app.UseCors("AllowAll");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
