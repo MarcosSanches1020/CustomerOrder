@@ -34,7 +34,7 @@ namespace CustomerOrders.API.Services
                 Success = true,
                 StatusCode = 200,
                 Data = cart.ToResponseDto(),
-                Message = "Item adicionado ao carrinho!"
+                Message = "Item added to cart!"
             };
         }
 
@@ -47,7 +47,7 @@ namespace CustomerOrders.API.Services
                 {
                     Success = false,
                     StatusCode = 404,
-                    Message = "Carrinho não encontrado"
+                    Message = "Cart not found"
                 };
             }
             return new ServiceCartResult<CartResponseDto>
@@ -66,7 +66,7 @@ namespace CustomerOrders.API.Services
                 Success = true,
                 StatusCode = 200,
                 Data = cart.ToResponseDto(),
-                Message = "Quantidade atualizada"
+                Message = "Quantity updated"
             };
         }
 
@@ -78,7 +78,7 @@ namespace CustomerOrders.API.Services
                 Success = true,
                 StatusCode = 200,
                 Data = cart.ToResponseDto(),
-                Message = "Item removido"
+                Message = "Item removed"
             };
         }
 
@@ -89,7 +89,7 @@ namespace CustomerOrders.API.Services
             {
                 Success = true,
                 StatusCode = 200,
-                Message = "Carrinho limpo com sucesso"
+                Message = "Cart cleared successfully"
             };
         }
 
@@ -116,7 +116,7 @@ namespace CustomerOrders.API.Services
 
             var product = await _appDbContext.products.FindAsync(itemsCart.ProductId);
             if (product == null)
-                throw new System.Exception("Produto não encontrado");
+                throw new System.Exception("Product not found");
 
             var existingItem = cart.Items.FirstOrDefault(i => i.ProductId == itemsCart.ProductId);
             if (existingItem != null)
@@ -152,13 +152,13 @@ namespace CustomerOrders.API.Services
 
             if (cart == null)
             {
-                throw new System.Exception("Carrinho não encontrado");
+                throw new System.Exception("Cart not found");
             }
 
             var product = await _appDbContext.products.FindAsync(productId);
             if (product == null)
             {
-                throw new System.Exception("Produto não encontrado");
+                throw new System.Exception("Product not found");
             }
 
             var existingItem = cart.Items.FirstOrDefault(i => i.ProductId == productId);
@@ -183,13 +183,13 @@ namespace CustomerOrders.API.Services
 
             if (cart == null)
             {
-                throw new System.Exception("Carrinho não encontrado");
+                throw new System.Exception("Cart not found");
             }
 
             var existingItem = cart.Items.FirstOrDefault(i => i.ProductId == productId);
             if (existingItem == null)
             {
-                throw new System.Exception("Item não encontrado no carrinho");
+                throw new System.Exception("Item not found in cart");
             }
 
             cart.Items.Remove(existingItem);

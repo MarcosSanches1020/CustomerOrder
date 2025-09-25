@@ -29,7 +29,7 @@ namespace CustomerOrders.API.Services
                 {
                     Success = false,
                     StatusCode = 400,
-                    Message = "Já existe um produto cadastrado com este nome"
+                    Message = "A product with this name already exists"
                 };
             }
             var entity = newProduct.ToEntityProduct();
@@ -39,7 +39,7 @@ namespace CustomerOrders.API.Services
                 Success = true,
                 StatusCode = 201,
                 Data = saved.ToResponseProductDto(),
-                Message = "Produto criado com sucesso"
+                Message = "Product created successfully"
             };
         }
 
@@ -58,7 +58,7 @@ namespace CustomerOrders.API.Services
                 {
                     Success = false,
                     StatusCode = 404,
-                    Message = "Produto não encontrado"
+                    Message = "Product not found"
                 };
             }
             return new ServiceProductResult<ProductResponseDto>
@@ -78,7 +78,7 @@ namespace CustomerOrders.API.Services
                 {
                     Success = false,
                     StatusCode = 404,
-                    Message = "Produto não encontrado"
+                    Message = "Product not found"
                 };
             }
             productUpdate.ApplyToEntity(existing);
@@ -88,7 +88,7 @@ namespace CustomerOrders.API.Services
                 Success = true,
                 StatusCode = 200,
                 Data = updatedProduct.ToResponseProductDto(),
-                Message = "Produto atualizado com sucesso"
+                Message = "Product updated successfully"
             };
         }
 
@@ -101,14 +101,14 @@ namespace CustomerOrders.API.Services
                 {
                     Success = false,
                     StatusCode = 404,
-                    Message = "Produto não encontrado"
+                    Message = "Product not found"
                 };
             }
             return new ServiceProductResult<object>
             {
                 Success = true,
                 StatusCode = 200,
-                Message = "Produto removido com sucesso"
+                Message = "Product removed successfully"
             };
         }
     private readonly AppDbContext _appDbContext;
@@ -126,7 +126,7 @@ namespace CustomerOrders.API.Services
             p => p.NameProduct == newProduct.NameProduct);
         if (productSave == null)
         {
-            throw new Exception("Erro ao inserir um novo produto");
+            throw new Exception("Error inserting new product");
         }
         return productSave;
     }
@@ -147,13 +147,13 @@ namespace CustomerOrders.API.Services
         var existingProduct = await _appDbContext.products.FindAsync(id);
         if (existingProduct == null)
         {
-            throw new Exception("Product not's valid");
+            throw new Exception("Product is not valid");
         }
         if (existingProduct.NameProduct != productsUpdate.NameProduct)
         {
             if (await ProductsVerify(productsUpdate.NameProduct))
             {
-                throw new Exception("Já existe um produto com esse nome cadastrado");
+                throw new Exception("A product with this name already exists");
             }
         }
         existingProduct.NameProduct = productsUpdate.NameProduct;
@@ -174,7 +174,7 @@ namespace CustomerOrders.API.Services
         var product = await _appDbContext.products.FindAsync(id);
         if (product == null)
         {
-            throw new Exception("Produto não encontrado");
+            throw new Exception("Product not found");
         }
         _appDbContext.products.Remove(product);
         await _appDbContext.SaveChangesAsync();

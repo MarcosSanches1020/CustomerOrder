@@ -35,7 +35,7 @@ namespace CustomerOrders.API.Services
                 {
                     Success = false,
                     StatusCode = 400,
-                    Message = "Já existe um cliente cadastrado com este CPF"
+                    Message = "A seller with this CPF already exists"
                 };
             }
             var entity = newSeller.ToEntity();

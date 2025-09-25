@@ -29,7 +29,7 @@ namespace CustomerOrders.API.Services
                 {
                     Success = false,
                     StatusCode = 400,
-                    Message = "Já existe um cliente cadastrado com este CPF"
+                    Message = "A customer with this CPF already exists"
                 };
             }
             var entity = newCustomer.ToEntity();
@@ -39,7 +39,7 @@ namespace CustomerOrders.API.Services
                 Success = true,
                 StatusCode = 201,
                 Data = saved.ToResponseDto(),
-                Message = "Cliente criado com sucesso"
+                Message = "Customer created successfully"
             };
         }
 
@@ -58,7 +58,7 @@ namespace CustomerOrders.API.Services
                 {
                     Success = false,
                     StatusCode = 404,
-                    Message = "Cliente não encontrado"
+                    Message = "Customer not found"
                 };
             }
             return new ServiceResult<CustomerResponseDto>
@@ -78,7 +78,7 @@ namespace CustomerOrders.API.Services
                 {
                     Success = false,
                     StatusCode = 404,
-                    Message = "Cliente não encontrado"
+                    Message = "Customer not found"
                 };
             }
             customerUpdate.ApplyToEntity(existing);
@@ -88,7 +88,7 @@ namespace CustomerOrders.API.Services
                 Success = true,
                 StatusCode = 200,
                 Data = updatedCustomer.ToResponseDto(),
-                Message = "Cliente atualizado com sucesso"
+                Message = "Customer updated successfully"
             };
         }
 
@@ -101,14 +101,14 @@ namespace CustomerOrders.API.Services
                 {
                     Success = false,
                     StatusCode = 404,
-                    Message = "Cliente não encontrado"
+                    Message = "Customer not found"
                 };
             }
             return new ServiceResult<object>
             {
                 Success = true,
                 StatusCode = 200,
-                Message = "Cliente removido com sucesso"
+                Message = "Customer removed successfully"
             };
         }
 
@@ -148,7 +148,7 @@ namespace CustomerOrders.API.Services
             {
                 if (await CustomerVerify(customerUpdate.Cpf))
                 {
-                    throw new Exception("Já existe um cliente cadastrado com este CPF");
+                    throw new Exception("A customer with this CPF already exists");
                 }
             }
             existingCustomer.Name = customerUpdate.Name;
