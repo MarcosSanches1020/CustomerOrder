@@ -12,7 +12,8 @@ namespace CustomerOrders.API.Mappings
                 Name = dto.Name,
                 Email = dto.Email,
                 Phone = dto.Phone,
-                Cpf = dto.Cpf
+                Cpf = dto.Cpf,
+                Password = dto.Password
             };
         }
 
@@ -22,6 +23,7 @@ namespace CustomerOrders.API.Mappings
             entity.Email = dto.Email;
             entity.Phone = dto.Phone;
             entity.Cpf = dto.Cpf;
+            entity.Password = dto.Password;
         }
 
         public static SellersResponseDto ToResponseDto(this Sellers entity)

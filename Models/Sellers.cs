@@ -28,11 +28,17 @@ public class Sellers : IAuditable
     [MaxLength(15)]
     public string Phone { get; set; }= string.Empty;
 
+
     [Column("CPF")]
     [Required(ErrorMessage = "The field CPF is required")]
     [MaxLength(11)]
     public string Cpf { get; set; }= string.Empty;
 
+    [Column("PASSWORD")]
+    [Required(ErrorMessage = "The field PASSWORD is required")]
+    [MaxLength(100)]
+    public string Password { get; set; }= string.Empty;
+    
     [Required]
     [Column("DATA_REGISTER")]
     public DateTime DataRegister { get; set; }

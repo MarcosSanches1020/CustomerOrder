@@ -20,4 +20,7 @@ public class SellersUpdateDto
     [Required(ErrorMessage = "The field CPF is required")]
     [MaxLength(11)]
     public string Cpf { get; set; }
+
+    [MaxLength(100)]
+    public string Password { get; set; } = string.Empty;
 }

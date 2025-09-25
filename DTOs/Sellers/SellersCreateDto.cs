@@ -19,4 +19,8 @@ public class SellersCreateDto
     [Required(ErrorMessage = "The field CPF is required")]
     [MaxLength(11)]
     public string Cpf { get; set; }
+
+    [Required(ErrorMessage = "The field PASSWORD is required")]
+    [MaxLength(100)]
+    public string Password { get; set; } = string.Empty;
 }
