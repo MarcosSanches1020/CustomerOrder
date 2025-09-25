@@ -21,6 +21,10 @@ namespace CustomerOrders.API.Controllers
         public async Task<IActionResult> AddCustomer([FromBody] CustomerCreateDto newCustomer)
         {
             var result = await _customerService.AddCustomerAsync(newCustomer);
+            if (!result.Success)
+            {
+                return StatusCode(result.StatusCode, new { message = result.Message });
+            }
             return Created("Customer successfully created", result.Data);
         }
 
@@ -35,13 +39,21 @@ namespace CustomerOrders.API.Controllers
         public async Task<ActionResult<CustomerResponseDto>> GetCustomer(int id)
         {
             var result = await _customerService.GetCustomerById(id);
+            if (!result.Success)
+            {
+                return StatusCode(result.StatusCode, new { message = result.Message });
+            }
             return Ok(result.Data);
         }
 
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateCustomer(int id, [FromBody] CustomerUpdateDto customerUpdate)
-        { 
+        {
             var result = await _customerService.UpdateCustomerId(id, customerUpdate);
+            if (!result.Success)
+            {
+                return StatusCode(result.StatusCode, new { message = result.Message });
+            }
             return Ok(result.Data);
         }
 
@@ -49,6 +61,10 @@ namespace CustomerOrders.API.Controllers
         public async Task<IActionResult> DeleteCustomer(int id)
         {
             var result = await _customerService.DeleteCustomeID(id);
+            if (!result.Success)
+            {
+                return StatusCode(result.StatusCode, new { message = result.Message });
+            }
             return Ok(result.Message);
         }
     }

@@ -20,6 +20,10 @@ namespace CustomerOrders.API.Controllers
         public async Task<IActionResult> CreateSeller([FromBody] SellersCreateDto newSeller)
         {
             var result = await _sellersService.createNewSellerAsync(newSeller);
+            if (!result.Success)
+            {
+                return StatusCode(result.StatusCode, new { message = result.Message });
+            }
             return Created("Seller successfully created", result.Datas);
         }
 
@@ -34,8 +38,33 @@ namespace CustomerOrders.API.Controllers
         public async Task<ActionResult<SellersResponseDto>> GetSeller(int id)
         {
             var result = await _sellersService.GetSellerId(id);
-            return Ok(result.Datas);   
+            if (!result.Success)
+            {
+                return StatusCode(result.StatusCode, new { message = result.Message });
+            }
+            return Ok(result.Datas);
         }
 
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateSeller(int id, [FromBody] SellersUpdateDto sellersUpdateDto)
+        {
+            var result = await _sellersService.updateSellerId(id, sellersUpdateDto);
+            if (!result.Success)
+            {
+                return StatusCode(result.StatusCode, new { message = result.Message });
+            }
+            return Ok(result.Datas);
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteSeller(int id)
+        {
+            var result = await _sellersService.DeleteSellerId(id);
+            if (!result.Success)
+            {
+                return StatusCode(result.StatusCode, new { message = result.Message });
+            }
+            return Ok(result.Message);
+        }
     }
 }
